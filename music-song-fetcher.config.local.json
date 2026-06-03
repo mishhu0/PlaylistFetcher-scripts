@@ -2,6 +2,13 @@
   "apiKey": "your api key here",
   "playlistId": "your playlist id here",
   "playlistTitle": "YouTube Playlist",
+  "ytDlp": {
+    "jsRuntime": "node",
+    "jsRuntimePath": "/usr/bin/node",
+    "cookiesPath": "your youtube cookies file path here",
+    "cookiesFromBrowser": "",
+    "extraArgs": []
+  },
   "paths": {
     "profileSiteDir": "../profile",
     "profileMusicDir": "../profile/music",
