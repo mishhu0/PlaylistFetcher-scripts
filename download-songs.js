@@ -2,10 +2,10 @@
 
 import fs from 'node:fs'
 import { spawnSync } from 'node:child_process'
-import { resolveProfileMusicPath } from './tool-paths.js'
+import { resolveFetchedSongsJsonPath, resolveSongsDirPath } from './tool-paths.js'
 
-const FETCHED_JSON_PATH = resolveProfileMusicPath('fetched-songs-ytb-api.json')
-const OUTPUT_DIR = resolveProfileMusicPath('songs')
+const FETCHED_JSON_PATH = resolveFetchedSongsJsonPath()
+const OUTPUT_DIR = resolveSongsDirPath()
 const PYTHON_COMMAND_CANDIDATES = process.platform === 'win32'
 	? ['python', 'py', 'python3']
 	: ['python3', 'python']
@@ -93,7 +93,7 @@ function downloadTrack(track, index, pythonCommand) {
 	const artistSanitized = sanitizeFilename(track.artist || 'Unknown')
 	const titleSanitized = sanitizeFilename(track.title || 'Untitled')
 	const outputFilename = `${artistSanitized} - ${titleSanitized}.mp3`
-	const outputPath = resolveProfileMusicPath('songs', outputFilename)
+	const outputPath = resolveSongsDirPath(outputFilename)
 
 	// Skip if already downloaded
 	if (fs.existsSync(outputPath)) {

@@ -3,49 +3,22 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import https from 'node:https'
-import { getNodeScriptUsage, getToolRelativePath, resolveProfileMusicPath, resolveToolPath } from './tool-paths.js'
+import {
+	getNodeScriptUsage,
+	getToolRelativePath,
+	loadFetcherConfig,
+	normalizeConfiguredText,
+	resolveFetchedSongsJsonPath,
+	resolveToolPath
+} from './tool-paths.js'
 
 const LOCAL_CONFIG_PATH = resolveToolPath('music-song-fetcher.config.local.json')
 const LOCAL_CONFIG_LABEL = getToolRelativePath('music-song-fetcher.config.local.json')
 const DEFAULT_PLAYLIST_ID_FALLBACK = 'PLMesbUqWAwDTx3oi0sdKM6Ro0c6V23W2Y'
 const DEFAULT_PLAYLIST_TITLE_FALLBACK = 'YouTube Playlist'
-const DEFAULT_OUTPUT_PATH = resolveProfileMusicPath('fetched-songs-ytb-api.json')
-const CONFIG_PLACEHOLDERS = new Set([
-	'PUT_YOUR_YOUTUBE_API_KEY_HERE',
-	'PUT_YOUR_YOUTUBE_PLAYLIST_ID_HERE',
-	'PUT_YOUR_YOUTUBE_PLAYLIST_TITLE_HERE'
-])
-
-function normalizeConfiguredText(value) {
-	const text = String(value || '').trim()
-	if (!text) return ''
-	return CONFIG_PLACEHOLDERS.has(text) ? '' : text
-}
-
-function loadLocalConfig() {
-	if (!fs.existsSync(LOCAL_CONFIG_PATH)) {
-		return {}
-	}
-
-	const content = fs.readFileSync(LOCAL_CONFIG_PATH, 'utf-8')
-	let parsed
-
-	try {
-		parsed = JSON.parse(content)
-	} catch (error) {
-		throw new Error(`Invalid JSON in ${LOCAL_CONFIG_LABEL}: ${error.message}`)
-	}
-
-	if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-		throw new Error(`Invalid config in ${LOCAL_CONFIG_LABEL}: expected a JSON object.`)
-	}
-
-	return parsed
-}
 
 function buildDefaultConfig() {
-	const localConfig = loadLocalConfig()
-	const configuredOutPath = normalizeConfiguredText(localConfig.outPath)
+	const localConfig = loadFetcherConfig()
 
 	return {
 		apiKey: String(process.env.YOUTUBE_API_KEY || normalizeConfiguredText(localConfig.apiKey) || '').trim(),
@@ -53,7 +26,7 @@ function buildDefaultConfig() {
 		playlistTitle: String(process.env.YOUTUBE_PLAYLIST_TITLE || normalizeConfiguredText(localConfig.playlistTitle) || DEFAULT_PLAYLIST_TITLE_FALLBACK).trim() || DEFAULT_PLAYLIST_TITLE_FALLBACK,
 		outPath: process.env.YOUTUBE_FETCHED_JSON_OUT
 			? path.resolve(process.env.YOUTUBE_FETCHED_JSON_OUT)
-			: (configuredOutPath ? path.resolve(configuredOutPath) : DEFAULT_OUTPUT_PATH)
+			: resolveFetchedSongsJsonPath()
 	}
 }
 

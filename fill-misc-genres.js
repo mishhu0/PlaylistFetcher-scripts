@@ -2,10 +2,10 @@
 
 import fs from 'node:fs'
 import https from 'node:https'
-import { getNodeScriptUsage, resolveProfileMusicPath, resolveToolPath } from './tool-paths.js'
+import { getNodeScriptUsage, resolveGenreLibraryPath, resolveSongsLibraryPath, resolveToolPath } from './tool-paths.js'
 
-const SONGS_LIBRARY_PATH = resolveProfileMusicPath('songs-library.json')
-const GENRE_LIBRARY_PATH = resolveProfileMusicPath('genre-library.json')
+const SONGS_LIBRARY_PATH = resolveSongsLibraryPath()
+const GENRE_LIBRARY_PATH = resolveGenreLibraryPath()
 const ARTIST_CACHE_PATH = resolveToolPath('artist-genre-cache-musicbrainz.json')
 
 const DEFAULT_USER_AGENT = 'profile-artist-genre-helper/1.0 (github-copilot-local-script)'

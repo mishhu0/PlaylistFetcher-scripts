@@ -2,9 +2,9 @@
 
 import fs from 'node:fs'
 import https from 'node:https'
-import { getNodeScriptUsage, resolveProfileMusicPath, resolveToolPath } from './tool-paths.js'
+import { getNodeScriptUsage, resolveSongsLibraryPath, resolveToolPath } from './tool-paths.js'
 
-const SONGS_LIBRARY_PATH = resolveProfileMusicPath('songs-library.json')
+const SONGS_LIBRARY_PATH = resolveSongsLibraryPath()
 const CACHE_PATH = resolveToolPath('genre-cache-itunes.json')
 
 const DEFAULT_DELAY_MS = 150

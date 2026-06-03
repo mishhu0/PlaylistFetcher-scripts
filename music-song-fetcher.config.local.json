@@ -1,0 +1,13 @@
+{
+  "apiKey": "your api key here",
+  "playlistId": "your playlist id here",
+  "playlistTitle": "YouTube Playlist",
+  "paths": {
+    "profileSiteDir": "../profile",
+    "profileMusicDir": "../profile/music",
+    "fetchedJsonPath": "../profile/music/fetched-songs-ytb-api.json",
+    "songsLibraryPath": "../profile/music/songs-library.json",
+    "genreLibraryPath": "../profile/music/genre-library.json",
+    "songsDir": "../profile/music/songs"
+  }
+}

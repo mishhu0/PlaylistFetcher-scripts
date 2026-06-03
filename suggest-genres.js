@@ -2,10 +2,10 @@
 
 import fs from 'node:fs'
 import https from 'node:https'
-import { getNodeScriptUsage, resolveProfileMusicPath, resolveToolPath } from './tool-paths.js'
+import { getNodeScriptUsage, resolveGenreLibraryPath, resolveSongsLibraryPath, resolveToolPath } from './tool-paths.js'
 
-const SONGS_LIBRARY_PATH = resolveProfileMusicPath('songs-library.json')
-const GENRE_LIBRARY_PATH = resolveProfileMusicPath('genre-library.json')
+const SONGS_LIBRARY_PATH = resolveSongsLibraryPath()
+const GENRE_LIBRARY_PATH = resolveGenreLibraryPath()
 const GENRE_TODO_PATH = resolveToolPath('genre-todo.json')
 const GENRE_SUGGESTIONS_PATH = resolveToolPath('genre-suggestions.json')
 const GENRE_CACHE_PATH = resolveToolPath('genre-cache-musicbrainz.json')

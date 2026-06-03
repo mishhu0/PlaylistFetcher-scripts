@@ -2,12 +2,18 @@
 
 import fs from 'fs'
 import path from 'path'
-import { getToolRelativePath, resolveProfileMusicPath, resolveToolPath } from './tool-paths.js'
+import {
+	getToolRelativePath,
+	resolveFetchedSongsJsonPath,
+	resolveSongsDirPath,
+	resolveSongsLibraryPath,
+	resolveToolPath
+} from './tool-paths.js'
 
-const SONGS_DIR = resolveProfileMusicPath('songs')
-const SONGS_LIBRARY_PATH = resolveProfileMusicPath('songs-library.json')
+const SONGS_DIR = resolveSongsDirPath()
+const SONGS_LIBRARY_PATH = resolveSongsLibraryPath()
 
-const FETCHED_YT_PRIMARY_PATH = resolveProfileMusicPath('fetched-songs-ytb-api.json')
+const FETCHED_YT_PRIMARY_PATH = resolveFetchedSongsJsonPath()
 const FETCHED_YT_FALLBACK_PATH = resolveToolPath('fetched-songs-ytb-api.json')
 
 const GENRE_TODO_PATH = resolveToolPath('genre-todo.json')
