@@ -133,10 +133,6 @@ function resolveSongsLibraryPath() {
   return getConfiguredPathValue('songsLibraryPath') || resolveProfileMusicPath('songs-library.json')
 }
 
-function resolveGenreLibraryPath() {
-  return getConfiguredPathValue('genreLibraryPath') || resolveProfileMusicPath('genre-library.json')
-}
-
 function getNodeScriptUsage(moduleUrl) {
   const scriptPath = fileURLToPath(moduleUrl)
   const relativePath = path.relative(process.cwd(), scriptPath) || path.basename(scriptPath)
@@ -153,7 +149,6 @@ export {
   getToolRelativePath,
   normalizeConfiguredText,
   resolveFetchedSongsJsonPath,
-  resolveGenreLibraryPath,
   resolveProfileMusicPath,
   resolveProfilePath,
   resolveRootPath,

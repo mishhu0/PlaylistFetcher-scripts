@@ -12,11 +12,10 @@ import {
 
 const SONGS_DIR = resolveSongsDirPath()
 const SONGS_LIBRARY_PATH = resolveSongsLibraryPath()
+const DEFAULT_TRACK_GENRE = 'SET GENRE'
 
 const FETCHED_YT_PRIMARY_PATH = resolveFetchedSongsJsonPath()
 const FETCHED_YT_FALLBACK_PATH = resolveToolPath('fetched-songs-ytb-api.json')
-
-const GENRE_TODO_PATH = resolveToolPath('genre-todo.json')
 
 function readJson(filePath) {
 	const content = fs.readFileSync(filePath, 'utf-8')
@@ -66,6 +65,15 @@ function normalizeKey(value) {
 		.normalize('NFKD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.replace(/[^a-z0-9]+/g, '')
+}
+
+function normalizeTrackGenre(track) {
+	const currentGenre = String(track && track.genre || '').trim()
+	const normalizedGenre = currentGenre.toLowerCase()
+
+	if (!currentGenre || normalizedGenre === 'unknown' || normalizedGenre === 'misc') {
+		track.genre = DEFAULT_TRACK_GENRE
+	}
 }
 
 function toPosixMusicSongsPath(basename) {
@@ -294,14 +302,12 @@ function main() {
 					track.file = nextFile
 					updatedFilePathCount++
 				}
-				track.downloadable = true
 				usedBasenames.add(basename)
 			} else {
-				track.downloadable = false
 				if (basename) usedBasenames.add(basename)
 			}
 
-			if (!track.genre) track.genre = 'Unknown'
+			normalizeTrackGenre(track)
 			keptTracks.push(track)
 		}
 		section.tracks = keptTracks
@@ -325,9 +331,8 @@ function main() {
 			id,
 			title,
 			artist,
-			genre: 'Unknown',
-			file: toPosixMusicSongsPath(basename),
-			downloadable: true
+			genre: DEFAULT_TRACK_GENRE,
+			file: toPosixMusicSongsPath(basename)
 		})
 	}
 
@@ -339,36 +344,13 @@ function main() {
 
 	writeJson(SONGS_LIBRARY_PATH, library)
 
-	const genreTodo = []
-	for (const section of library.sections) {
-		const tracks = Array.isArray(section && section.tracks) ? section.tracks : []
-		for (const track of tracks) {
-			const genre = String(track.genre || '').trim()
-			if (genre && genre.toLowerCase() !== 'unknown') continue
-
-			const title = String(track.title || '').trim()
-			const artist = String(track.artist || '').trim()
-			const query = [artist, title, 'genre'].filter(Boolean).join(' ')
-			genreTodo.push({
-				artist,
-				title,
-				file: track.file || '',
-				searchUrl: 'https://www.google.com/search?q=' + encodeURIComponent(query)
-			})
-		}
-	}
-
-	writeJson(GENRE_TODO_PATH, { generatedAt: new Date().toISOString(), items: genreTodo })
-
 	console.log('Updated songs library written to:', SONGS_LIBRARY_PATH)
-	console.log('Genre todo written to:', GENRE_TODO_PATH)
 	console.log('---')
 	console.log('Fetched tracks used for metadata:', fetchedTracks.length)
 	console.log('Removed (not in playlist):', removedNotInPlaylistCount)
 	console.log('Newly added tracks:', newlyAddedTracks.length)
 	console.log('Updated title/artist count:', updatedMetadataCount)
 	console.log('Updated file path count:', updatedFilePathCount)
-	console.log('Tracks needing genre review:', genreTodo.length)
 }
 
 try {

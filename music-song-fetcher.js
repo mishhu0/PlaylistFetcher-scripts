@@ -16,6 +16,7 @@ const LOCAL_CONFIG_PATH = resolveToolPath('music-song-fetcher.config.local.json'
 const LOCAL_CONFIG_LABEL = getToolRelativePath('music-song-fetcher.config.local.json')
 const DEFAULT_PLAYLIST_ID_FALLBACK = 'PLMesbUqWAwDTx3oi0sdKM6Ro0c6V23W2Y'
 const DEFAULT_PLAYLIST_TITLE_FALLBACK = 'YouTube Playlist'
+const DEFAULT_TRACK_GENRE = 'SET GENRE'
 
 function buildDefaultConfig() {
 	const localConfig = loadFetcherConfig()
@@ -207,9 +208,8 @@ function toTrack(item, videoDetails, playlistId) {
 		id: videoId || String(item && item.id ? item.id : title),
 		title: title,
 		artist: artist,
-		genre: 'YouTube',
+		genre: DEFAULT_TRACK_GENRE,
 		file: '',
-		downloadable: false,
 		youtubeVideoId: videoId,
 		youtubeUrl: videoId ? 'https://www.youtube.com/watch?v=' + videoId + '&list=' + playlistId : '',
 		thumbnail: (videoSnippet.thumbnails && (videoSnippet.thumbnails.medium || videoSnippet.thumbnails.default || videoSnippet.thumbnails.high) || snippet.thumbnails && (snippet.thumbnails.medium || snippet.thumbnails.default || snippet.thumbnails.high) || {}).url || '',

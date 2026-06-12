@@ -12,6 +12,7 @@
 		playlistTitle: window.YOUTUBE_PLAYLIST_TITLE || 'YouTube Playlist',
 		maxResults: 50
 	}
+	const DEFAULT_TRACK_GENRE = 'SET GENRE'
 
 	function clampMaxResults(value) {
 		const numeric = Number(value)
@@ -152,9 +153,8 @@
 			id: videoId || String(item && item.id ? item.id : title),
 			title: title,
 			artist: artist,
-			genre: 'YouTube',
+			genre: DEFAULT_TRACK_GENRE,
 			file: '',
-			downloadable: false,
 			youtubeVideoId: videoId,
 			youtubeUrl: videoId ? 'https://www.youtube.com/watch?v=' + videoId + '&list=' + playlistId : '',
 			thumbnail: (videoSnippet.thumbnails && (videoSnippet.thumbnails.medium || videoSnippet.thumbnails.default || videoSnippet.thumbnails.high) || snippet.thumbnails && (snippet.thumbnails.medium || snippet.thumbnails.default || snippet.thumbnails.high) || {}).url || '',
