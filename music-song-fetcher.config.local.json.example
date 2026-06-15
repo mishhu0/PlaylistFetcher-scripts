@@ -1,0 +1,19 @@
+{
+  "apiKey": "your api key here",
+  "playlistId": "your playlist id here",
+  "playlistTitle": "YouTube Playlist",
+  "ytDlp": {
+    "jsRuntime": "node",
+    "jsRuntimePath": "/usr/bin/node",
+    "cookiesPath": "your youtube cookies file path here",
+    "cookiesFromBrowser": "",
+    "extraArgs": []
+  },
+  "paths": {
+    "profileSiteDir": "../myProfileWebsite-live",
+    "profileMusicDir": "../myProfileWebsite-live/music",
+    "fetchedJsonPath": "../myProfileWebsite-live/music/fetched-songs-ytb-api.json",
+    "songsLibraryPath": "../myProfileWebsite-live/music/songs-library.json",
+    "songsDir": "../myProfileWebsite-live/music/songs"
+  }
+}
